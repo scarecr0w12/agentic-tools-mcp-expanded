@@ -25,7 +25,7 @@ export class FileStorage implements Storage {
       tasks: [],
       subtasks: [],
       migration: {
-        version: getVersion()
+        version: ''
       }
     };
   }
@@ -54,7 +54,7 @@ export class FileStorage implements Storage {
         projects: loadedData.projects || [],
         tasks: loadedData.tasks || [],
         subtasks: loadedData.subtasks || [],
-        migration: loadedData.migration || { version: getVersion() }
+        migration: loadedData.migration || { version: '' }
       };
 
       // Check if migration is needed
@@ -323,9 +323,7 @@ export class FileStorage implements Storage {
     if (!this.data.subtasks || this.data.subtasks.length === 0) {
       // Update migration metadata
       this.data.migration = {
-        version: getVersion(),
-        migratedAt: new Date().toISOString(),
-        subtasksMigrated: 0
+        version: ''
       };
       await this.save();
       return { migratedSubtasks: 0, errors: [] };
@@ -367,9 +365,7 @@ export class FileStorage implements Storage {
     // Clear subtasks array and update migration metadata
     this.data.subtasks = [];
     this.data.migration = {
-      version: getVersion(),
-      migratedAt: new Date().toISOString(),
-      subtasksMigrated: migratedCount
+      version: ''
     };
 
     await this.save();

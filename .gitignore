@@ -73,6 +73,7 @@ jspm_packages/
 
 # Task management data (project-specific)
 .agentic-tools-mcp/
+test/test-data/
 
 # Temporary files
 *.tmp

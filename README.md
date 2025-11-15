@@ -71,13 +71,6 @@ This MCP server is part of a complete task and memory management ecosystem:
 - `research_task` - Guide AI agents to perform comprehensive web research with memory integration
 - `generate_research_queries` - Generate intelligent, targeted web search queries for task research
 
-#### Legacy Subtask Management (Backward Compatibility)
-- `list_subtasks` - View child tasks (legacy compatibility, now uses unified Task model)
-- `create_subtask` - Create child tasks (legacy compatibility, creates tasks with `parentId`)
-- `get_subtask` - Get task information (legacy compatibility for existing subtasks)
-- `update_subtask` - Edit child tasks (legacy compatibility, uses unified Task operations)
-- `delete_subtask` - Delete child tasks (legacy compatibility, deletes tasks recursively)
-
 #### Agent Memory Management
 - `create_memory` - Store new memories with title and detailed content
 - `search_memories` - Find memories using intelligent multi-field search with relevance scoring
@@ -283,17 +276,21 @@ The separate Subtask interface has been replaced by the unified Task model. Lega
 
 3. **Break Down Tasks**
    ```
-   Use create_subtask with:
+   Use create_task with parentId for nested tasks:
    - workingDirectory="/path/to/your/project"
    - name="Create wireframes"
    - details="Sketch basic layout structure"
-   - taskId="[task-id-from-step-2]"
+   - projectId="[project-id-from-step-1]"
+   - parentId="[task-id-from-step-2]"  # Creates a subtask!
+   - priority=7
+   - complexity=4
+   - status="pending"
    ```
 
 4. **Track Progress**
    ```
-   Use update_task and update_subtask to mark items as completed
-   Use list_projects, list_tasks, and list_subtasks to view progress
+   Use update_task to mark items as completed and manage status
+   Use list_tasks with showHierarchy=true to view progress in tree format
    (All with workingDirectory parameter)
    ```
 
@@ -437,27 +434,12 @@ src/
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed version history and release notes.
 
-### Current Version: 1.8.0
-- 🚀 **NEW: Unified Task Model**: Single task interface supporting unlimited nesting depth
-- 🚀 **NEW: Unlimited Hierarchy**: Tasks → Subtasks → Sub-subtasks → infinite depth nesting
-- 🚀 **NEW: Automatic Migration**: Seamless upgrade from 3-level to unlimited depth model
-- 🚀 **NEW: Enhanced Tree Display**: Hierarchical visualization with level indicators and unlimited depth
-- 🚀 **NEW: Hierarchy Tools**: `move_task`, `migrate_subtasks` for unlimited depth management
-- ✅ **Rich Features at All Levels**: Every task gets priority, complexity, dependencies, tags, and time tracking
-- ✅ **Enhanced Task Management**: Rich metadata with dependencies, priority, complexity, status, tags, and time tracking
-- ✅ **Advanced AI Agent Tools**: PRD parsing, task recommendations, complexity analysis, progress inference, and research guidance
-- ✅ **Intelligent Task Dependencies**: Dependency validation and workflow management across hierarchy
-- ✅ **Priority & Complexity System**: 1-10 scale prioritization and complexity estimation at every level
-- ✅ **Enhanced Status Workflow**: pending → in-progress → blocked → done status tracking
-- ✅ **Tag-Based Organization**: Flexible categorization and filtering system
-- ✅ **Time Tracking**: Estimated and actual hours for project planning
-- ✅ **Hybrid Research Integration**: Web research with memory caching for AI agents
-- ✅ **Complete task management system** with unlimited hierarchical organization
-- ✅ **Agent memories** with title/content architecture and JSON file storage
-- ✅ **Intelligent multi-field search** with relevance scoring
-- ✅ **Project-specific storage** with comprehensive MCP tools
-- ✅ **Global directory mode** with --claude flag for Claude Desktop
-- ✅ **VS Code extension ecosystem** integration
+### Current Version: 1.8.2
+- 🚨 **CRITICAL FIX**: Removed deprecated legacy subtask tools to prevent data corruption
+- 🔒 **Data Integrity**: Legacy subtask tools (`create_subtask`, `list_subtasks`, `get_subtask`, `update_subtask`, `delete_subtask`) removed
+- ✅ **Migration Complete**: Use unified `create_task` with `parentId` for all nested tasks
+- ✅ **Unlimited Hierarchy**: Full support for tasks at any nesting depth using `parentId`
+- 🚀 **NEW: Unified Task Model**: Single task interface supporting unlimited nesting depth (v1.8.0)
 
 ## Acknowledgments
 
@@ -509,7 +491,7 @@ npm start
 - 🎨 **Visual Indicators**: Status emojis, priority badges, and complexity indicators
 - 📊 **Rich Tooltips**: Complete task information on hover
 - 🔄 **Real-time Sync**: Instant synchronization with MCP server data
-- � **Responsive Design**: Adaptive forms that work on different screen sizes
+-  **Responsive Design**: Adaptive forms that work on different screen sizes
 
 **Perfect for:**
 - Visual task management and planning
